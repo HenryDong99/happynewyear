@@ -30,9 +30,17 @@ var S = {
     S.Drawing.loop(function () {
       S.Shape.render();
     });
+
+    // 调用 initVars 和 frame 函数
+    initVars();
+    frame();
   }
 };
 
+// 确保在页面加载完成后调用 S.init
+window.addEventListener('load', function() {
+  S.init();
+});
 
 S.Drawing = (function () {
   var canvas,

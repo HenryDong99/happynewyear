@@ -62,39 +62,39 @@ function initVars(){
 	frames = 0;
 }
 
-// 光栅化点
-function rasterizePoint(x,y,z){
-	var p,d;
-	x-=playerX;
-	y-=playerY;
-	z-=playerZ;
-	p=Math.atan2(x,z);
-	d=Math.sqrt(x*x+z*z);
-	x=Math.sin(p-yaw)*d;
-	z=Math.cos(p-yaw)*d;
-	p=Math.atan2(y,z);
-	d=Math.sqrt(y*y+z*z);
-	y=Math.sin(p-pitch)*d;
-	z=Math.cos(p-pitch)*d;
-	var rx1=-1000,ry1=1,rx2=1000,ry2=1,rx3=0,ry3=0,rx4=x,ry4=z,uc=(ry4-ry3)*(rx2-rx1)-(rx4-rx3)*(ry2-ry1);
-	if(!uc) return {x:0,y:0,d:-1};
-	var ua=((rx4-rx3)*(ry1-ry3)-(ry4-ry3)*(rx1-rx3))/uc;
-	var ub=((rx2-rx1)*(ry1-ry3)-(ry2-ry1)*(rx1-rx3))/uc;
-	if(!z)z=.000000001;
-	if(ua>0&&ua<1&&ub>0&&ub<1){
-		return {
-			x:cx+(rx1+ua*(rx2-rx1))*scale,
-			y:cy+y/z*scale,
-			d:Math.sqrt(x*x+y*y+z*z)
-		};
-	}else{
-		return {
-			x:cx+(rx1+ua*(rx2-rx1))*scale,
-			y:cy+y/z*scale,
-			d:-1
-		};
-	}
-}
+// // 光栅化点
+// function rasterizePoint(x,y,z){
+// 	var p,d;
+// 	x-=playerX;
+// 	y-=playerY;
+// 	z-=playerZ;
+// 	p=Math.atan2(x,z);
+// 	d=Math.sqrt(x*x+z*z);
+// 	x=Math.sin(p-yaw)*d;
+// 	z=Math.cos(p-yaw)*d;
+// 	p=Math.atan2(y,z);
+// 	d=Math.sqrt(y*y+z*z);
+// 	y=Math.sin(p-pitch)*d;
+// 	z=Math.cos(p-pitch)*d;
+// 	var rx1=-1000,ry1=1,rx2=1000,ry2=1,rx3=0,ry3=0,rx4=x,ry4=z,uc=(ry4-ry3)*(rx2-rx1)-(rx4-rx3)*(ry2-ry1);
+// 	if(!uc) return {x:0,y:0,d:-1};
+// 	var ua=((rx4-rx3)*(ry1-ry3)-(ry4-ry3)*(rx1-rx3))/uc;
+// 	var ub=((rx2-rx1)*(ry1-ry3)-(ry2-ry1)*(rx1-rx3))/uc;
+// 	if(!z)z=.000000001;
+// 	if(ua>0&&ua<1&&ub>0&&ub<1){
+// 		return {
+// 			x:cx+(rx1+ua*(rx2-rx1))*scale,
+// 			y:cy+y/z*scale,
+// 			d:Math.sqrt(x*x+y*y+z*z)
+// 		};
+// 	}else{
+// 		return {
+// 			x:cx+(rx1+ua*(rx2-rx1))*scale,
+// 			y:cy+y/z*scale,
+// 			d:-1
+// 		};
+// 	}
+// }
 
 // 生成种子
 function spawnSeed(){
@@ -109,62 +109,62 @@ function spawnSeed(){
 	seeds.push(seed);
 }
 
-// 爆炸效果
-function splode(x,y,z){
-	t=5+parseInt(Math.random()*150);
-	sparkV=1+Math.random()*2.5;
-	type=parseInt(Math.random()*3);
-	switch(type){
-		case 0:
-			pic1=parseInt(Math.random()*10);
-			break;
-		case 1:
-			pic1=parseInt(Math.random()*10);
-			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
-			break;
-		case 2:
-			pic1=parseInt(Math.random()*10);
-			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
-			do{ pic3=parseInt(Math.random()*10); }while(pic3==pic1 || pic3==pic2);
-			break;
-	}
-	for(m=1;m<t;++m){
-		spark=new Object();
-		spark.x=x; spark.y=y; spark.z=z;
-		p1=pi*2*Math.random();
-		p2=pi*Math.random();
-		v=sparkV*(1+Math.random()/6)
-		spark.vx=Math.sin(p1)*Math.sin(p2)*v;
-		spark.vz=Math.cos(p1)*Math.sin(p2)*v;
-		spark.vy=Math.cos(p2)*v;
-		switch(type){
-			case 0: spark.img=sparkPics[pic1]; break;
-			case 1:
-				spark.img=sparkPics[parseInt(Math.random()*2)?pic1:pic2];
-				break;
-			case 2:
-				switch(parseInt(Math.random()*3)){
-					case 0: spark.img=sparkPics[pic1]; break;
-					case 1: spark.img=sparkPics[pic2]; break;
-					case 2: spark.img=sparkPics[pic3]; break;
-				}
-				break;
-		}
-		spark.radius=25+Math.random()*50;
-		spark.alpha=1;
-		spark.trail=new Array();
-		sparks.push(spark);
-	}
-	switch(parseInt(Math.random()*4)){
-		case 0:	pow=new Audio(s+"pow1.ogg"); break;
-		case 1:	pow=new Audio(s+"pow2.ogg"); break;
-		case 2:	pow=new Audio(s+"pow3.ogg"); break;
-		case 3:	pow=new Audio(s+"pow4.ogg"); break;
-	}
-	d=Math.sqrt((x-playerX)*(x-playerX)+(y-playerY)*(y-playerY)+(z-playerZ)*(z-playerZ));
-	pow.volume=1.5/(1+d/10);
-	pow.play();
-}
+// // 爆炸效果
+// function splode(x,y,z){
+// 	t=5+parseInt(Math.random()*150);
+// 	sparkV=1+Math.random()*2.5;
+// 	type=parseInt(Math.random()*3);
+// 	switch(type){
+// 		case 0:
+// 			pic1=parseInt(Math.random()*10);
+// 			break;
+// 		case 1:
+// 			pic1=parseInt(Math.random()*10);
+// 			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
+// 			break;
+// 		case 2:
+// 			pic1=parseInt(Math.random()*10);
+// 			do{ pic2=parseInt(Math.random()*10); }while(pic2==pic1);
+// 			do{ pic3=parseInt(Math.random()*10); }while(pic3==pic1 || pic3==pic2);
+// 			break;
+// 	}
+// 	for(m=1;m<t;++m){
+// 		spark=new Object();
+// 		spark.x=x; spark.y=y; spark.z=z;
+// 		p1=pi*2*Math.random();
+// 		p2=pi*Math.random();
+// 		v=sparkV*(1+Math.random()/6)
+// 		spark.vx=Math.sin(p1)*Math.sin(p2)*v;
+// 		spark.vz=Math.cos(p1)*Math.sin(p2)*v;
+// 		spark.vy=Math.cos(p2)*v;
+// 		switch(type){
+// 			case 0: spark.img=sparkPics[pic1]; break;
+// 			case 1:
+// 				spark.img=sparkPics[parseInt(Math.random()*2)?pic1:pic2];
+// 				break;
+// 			case 2:
+// 				switch(parseInt(Math.random()*3)){
+// 					case 0: spark.img=sparkPics[pic1]; break;
+// 					case 1: spark.img=sparkPics[pic2]; break;
+// 					case 2: spark.img=sparkPics[pic3]; break;
+// 				}
+// 				break;
+// 		}
+// 		spark.radius=25+Math.random()*50;
+// 		spark.alpha=1;
+// 		spark.trail=new Array();
+// 		sparks.push(spark);
+// 	}
+// 	switch(parseInt(Math.random()*4)){
+// 		case 0:	pow=new Audio(s+"pow1.ogg"); break;
+// 		case 1:	pow=new Audio(s+"pow2.ogg"); break;
+// 		case 2:	pow=new Audio(s+"pow3.ogg"); break;
+// 		case 3:	pow=new Audio(s+"pow4.ogg"); break;
+// 	}
+// 	d=Math.sqrt((x-playerX)*(x-playerX)+(y-playerY)*(y-playerY)+(z-playerZ)*(z-playerZ));
+// 	pow.volume=1.5/(1+d/10);
+// 	pow.play();
+// }
 
 // 逻辑处理
 function doLogic(){
